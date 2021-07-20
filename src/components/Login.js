@@ -1,6 +1,9 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 
 const Login = (props) => {
+
+    const { handleAuth } = props
 
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
@@ -20,7 +23,23 @@ const Login = (props) => {
             email : email,
             password : password
         }
-        console.log(formData)
+        // console.log(formData)
+
+        axios.post('http://dct-user-auth.herokuapp.com/users/login',formData)
+            .then((Response) => {
+                const result = Response.data
+                if( result.hasOwnProperty('errors')){
+                    alert(result.errors)
+                }else{
+                    alert('Successfully Login')
+                    localStorage.setItem('token',result.token)
+                    props.history.push('/')
+                    handleAuth()
+                }
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
     }
 
     return (

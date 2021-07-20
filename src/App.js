@@ -1,28 +1,23 @@
-import React from 'react'
-import { Link, Route } from 'react-router-dom'
-
-import Home from './components/Home'
-import Login from './components/Login'
-import Register from './components/Register'
+import React, { useEffect, useState } from 'react'
+import Navbar from './components/Navbar'
 
 const App = (props) => {
+  const [ userLogin, setUserLogin ] = useState(false)
+
+  const handleAuth = () => {
+    setUserLogin(!userLogin)
+  }
+
+  useEffect(() => {
+    if(localStorage.getItem('token')){
+      handleAuth()
+    }
+  },[])
+
   return (
     <div>
       <h1>User Auth</h1>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-      </ul>
-      <Route path="/" component={ Home } exact={ true }/>
-      <Route path="/register" component={ Register}/>
-      <Route path="/login" component={ Login}/>
+      <Navbar userLogin={ userLogin } handleAuth={ handleAuth }/>
     </div>
   )
 }
