@@ -5,6 +5,7 @@ import Home from './Home'
 import Login from './Login'
 import Register from './Register'
 import Account from './Account'
+import MyNotesContainer from './MyNotesContainer'
 
 const Navbar = (props) => {
     const { userLogin, handleAuth } = props
@@ -18,6 +19,7 @@ const Navbar = (props) => {
                     userLogin ? (
                         <React.Fragment>
                             <li><Link to="/account">Account</Link></li>
+                            <li><Link to="/mynotes">My Notes</Link></li>
                             <li><Link to="" onClick = { () => {
                                 localStorage.removeItem('token')
                                 alert('successfully logout')
@@ -40,6 +42,7 @@ const Navbar = (props) => {
                 return <Login {...props} handleAuth={ handleAuth }/>
             }} />
             <Route path="/account" component={ Account }/>
+            <Route path="/mynotes" component={ MyNotesContainer }/>
         </div>
     )
 }
