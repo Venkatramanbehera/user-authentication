@@ -17,6 +17,7 @@ const Account = (props) => {
         })
         .catch((err) => {
             console.log(err)
+            props.history.push('/')
         })
     },[])
 

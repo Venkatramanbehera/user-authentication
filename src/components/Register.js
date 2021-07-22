@@ -7,6 +7,9 @@ const Register = (props) => {
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
 
+    const [ usernameErr, setUsernameErr ] = useState({})
+    const [ passwordErr, setPasswordErr ] = useState({})
+
     const handleChange = (e) => {
         const { name,value } = e.target
 
@@ -19,6 +22,21 @@ const Register = (props) => {
         }
     }
 
+    const formValidation = () => {
+        const usernameErr = {}
+        let isValid = true
+        if(userName.trim().length < 5){
+            usernameErr.userNameSort = 'UserName is too sort'
+            isValid = false
+        }
+        if(userName.trim().length > 10){
+            usernameErr.userNameLong = 'UserName is too Long'
+            isValid = false
+        }
+        setUsernameErr(usernameErr)
+        return isValid
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const formData = {
@@ -27,9 +45,10 @@ const Register = (props) => {
             email : email
         }
 
+        const isValid = formValidation()
         // after validation
-
-        axios.post('http://dct-user-auth.herokuapp.com/users/register',formData)
+        if( isValid ){
+            axios.post('http://dct-user-auth.herokuapp.com/users/register',formData)
             .then((res) => {
                 const result = res.data
                 if( result.hasOwnProperty('errors')){
@@ -42,6 +61,7 @@ const Register = (props) => {
             .catch((err) => {
                 console.log(err)
             })
+        }
     }
 
     return (
@@ -50,7 +70,11 @@ const Register = (props) => {
             <form onSubmit={ handleSubmit }>
                 <label> UserName </label> <br />
                 <input type="text" placeholder="Enter UserName" value={ userName } name="userName" onChange={ handleChange }/> <br />
-
+                {
+                    Object.keys(usernameErr).map((key) => {
+                        return <div style={{ color:'red'}}> { usernameErr[key] } </div>
+                    })
+                }
                 <label> email </label> <br />
                 <input type="email" placeholder="Enter Email" value={ email } name="email" onChange={ handleChange }/> <br />
 

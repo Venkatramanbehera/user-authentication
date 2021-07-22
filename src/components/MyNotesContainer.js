@@ -18,6 +18,17 @@ const MyNotesContainer = (props) => {
         setNotes(result)
     }
 
+    const updateNote = (note) => {
+        const result = notes.map((n) => {
+            if(n._id === note._id){
+                return {...note}
+            }else{
+                return {...n}
+            }
+        })
+        setNotes(result)
+    }
+
     useEffect(() => {
         axios.get('http://dct-user-auth.herokuapp.com/api/notes',{
             headers : {
@@ -32,7 +43,7 @@ const MyNotesContainer = (props) => {
 
     return (
         <div style={{ display:'inline-flex', justifyContent:'space-around',width:'100%'}}>
-                <MyNoteList notes={ notes } removeNote={ removeNote }/>
+                <MyNoteList notes={ notes } removeNote={ removeNote } updateNote={ updateNote }/>
                 <AddNote addNote={ addNote }/>
         </div>
     )
